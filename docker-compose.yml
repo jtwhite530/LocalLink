@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: Test1234&
+      MYSQL_DATABASE: local_link_db
+      MYSQL_USER: jamesonw
+      MYSQL_PASSWORD: Test1234&
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  web:
+    build: .
+    volumes:
+      - .:/code
+      - ./static:/code/static
+      - ./media:/code/media
+      - ./templates:/code/templates
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+
+volumes:
+  mysql_data:
